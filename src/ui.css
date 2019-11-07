@@ -1,0 +1,127 @@
+body {
+  font-family: Inter, Roboto, -apple-system, system-ui, Helvetica, sans-serif;
+}
+main {
+  padding: 10px;
+}
+h2 {
+  margin-top: 0;
+  font-size: 11px;
+}
+p {
+  font-size: 11px;
+}
+button {
+  padding: 10px 20px;
+  background: lightgray;
+  border: none;
+  font-size: 16px;
+}
+button:hover,
+button:focus {
+  background: cornflowerblue;
+  cursor: pointer;
+}
+button.ghost {
+  padding: 10px 20px;
+  background: none;
+  border: 1px solid lightgray;
+}
+button.ghost:hover,
+button.ghost:focus {
+  background: none;
+  border: 1px solid cornflowerblue;
+}
+
+#send-style-changes p:first-child {
+  margin-top: 0;
+}
+#send-style-changes input {
+  border: none;
+  border-bottom: 1px solid grey;
+  font-size: 16px;
+  padding: 3px 0;
+  min-width: 300px;
+}
+.text-input-label {
+  font-size: 12px;
+  color: grey;
+}
+.text-input-label:focus-within {
+  color: cornflowerblue;
+}
+#send-style-changes input:focus {
+  outline: none;
+  border-bottom: 1px solid cornflowerblue;
+}
+
+#review-panel,
+.form-container {
+  padding: 10px;
+  border: 1px solid grey;
+  overflow-x: auto;
+}
+.info-icon {
+  display: inline-block;
+  height: 20px;
+  padding: 0 6px;
+  border: white 1px solid;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.info-banner {
+  padding: 10px;
+  background: cornflowerblue;
+  color: white;
+  font-size: 16px;
+}
+.success-banner {
+  padding: 10px;
+  background: green;
+  color: white;
+}
+.review-section-title {
+  text-transform: capitalize;
+  border-bottom: 1px solid grey;
+  font-size: 16px;
+}
+.review-section-title:first-child {
+  margin-top: 0;
+}
+.tone-title,
+.removed-color,
+.added-color,
+.color-value {
+  font-size: 12px;
+}
+.added-color {
+  color: green;
+}
+.removed-color {
+  color: red;
+}
+.color-name {
+  margin-bottom: 5px;
+}
+.validate-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#pull-request-input {
+  opacity: 0;
+}
+
+#url-copied {
+  display: none;
+  padding: 0 5px;
+  color: cornflowerblue;
+}
+
+#loader-panel {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
