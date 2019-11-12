@@ -1,12 +1,14 @@
 import * as ReactDOM from 'react-dom'
 import * as React from 'react'
 import { detailedDiff } from 'deep-object-diff';
-import getOldColors from './services/getOldColors';
-import isColorChange from './services/isColorChange';
-import displayReviewPanel from './views/review';
-import updateRemoteColors from './services/updateRemoteColors';
+
+import Loader from 'components/Loader';
+import getOldColors from 'services/getOldColors';
+import isColorChange from 'services/isColorChange';
+import updateRemoteColors from 'services/updateRemoteColors';
+import displayReviewPanel from 'views/Review';
+
 import './ui.css';
-import './views/loader.css';
 
 enum Step {
   INFO = 'INFO',
@@ -280,7 +282,7 @@ class App extends React.Component<{}, StateProps> {
       </div>
       }
       {this.state.step === Step.LOADING && <div id="loader-panel">
-        <div className="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <Loader />
       </div>
       }
     </>
