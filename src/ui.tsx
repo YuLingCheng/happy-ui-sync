@@ -6,7 +6,7 @@ import Loader from 'components/Loader';
 import getOldColors from 'services/getOldColors';
 import isColorChange from 'services/isColorChange';
 import updateRemoteColors from 'services/updateRemoteColors';
-import displayReviewPanel from 'views/Review';
+import Review from 'views/Review';
 
 import './ui.css';
 
@@ -29,6 +29,8 @@ interface StateProps {
   repository: string;
   colorsFilepath: string;
   branchRef: string;
+  colorDiff: Object;
+  oldColors: Object;
   PRLink: string;
 }
 
@@ -37,6 +39,8 @@ const initialState = {
   encodedColorsFile: {
     sha: ''
   },
+  colorDiff: {},
+  oldColors: {},
   PRLink: '',
 };
 
@@ -143,7 +147,7 @@ class App extends React.Component<{}, StateProps> {
           const colorDiff = detailedDiff(oldColors, this.state.newColors);
           if (isColorChange(colorDiff)) {
             this.goToStep(Step.REVIEW)();
-            displayReviewPanel(colorDiff, oldColors);
+            this.setState({ colorDiff, oldColors });
           }
           break;
       }
@@ -241,10 +245,7 @@ class App extends React.Component<{}, StateProps> {
       </form>
       }
       {this.state.step === Step.REVIEW && <div id="confirmation-panel">
-        <p className="info-banner">
-          <span className="info-icon">?</span>Step 2/2: Review your changes
-        </p>
-        <div id="review-panel"></div>
+        <Review colorDiff={this.state.colorDiff} oldColors={this.state.oldColors} />
         <div className="validate-section">
           <button
             type="submit"

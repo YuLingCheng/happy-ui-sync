@@ -90,7 +90,8 @@ button.ghost:focus {
   margin-top: 0;
 }
 .tone-title,
-.removed-color,
+.deleted-color,
+.updated-color,
 .added-color,
 .color-value {
   font-size: 12px;
@@ -98,7 +99,8 @@ button.ghost:focus {
 .added-color {
   color: green;
 }
-.removed-color {
+.deleted-color,
+.updated-color {
   color: red;
 }
 .color-name {
