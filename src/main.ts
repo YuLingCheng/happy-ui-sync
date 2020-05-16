@@ -1,4 +1,4 @@
-import getNewColors from './services/getNewColors';
+import getNewColors from "./services/getNewColors";
 // This plugin will open a modal to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
@@ -16,15 +16,15 @@ const getUserInfo = async () => {
     email,
     repository,
     colorsFilepath,
-    branchRef
-  } = await figma.clientStorage.getAsync('USER_INFO');
+    branchRef,
+  } = await figma.clientStorage.getAsync("USER_INFO");
   figma.ui.postMessage({
-    type: 'REHYDRATE_INFO',
+    type: "REHYDRATE_INFO",
     name,
     email,
     repository,
     colorsFilepath,
-    branchRef
+    branchRef,
   });
 };
 
@@ -33,23 +33,27 @@ getUserInfo();
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = msg => {
+figma.ui.onmessage = (msg) => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'SAVE_INFO') {
+  if (msg.type === "SAVE_INFO") {
     const { userName, userEmail, repository, colorsFilepath, branchRef } = msg;
-    figma.clientStorage.setAsync('USER_INFO', {
+    figma.clientStorage.setAsync("USER_INFO", {
       name: userName,
       email: userEmail,
       repository,
       colorsFilepath,
-      branchRef
+      branchRef,
     });
     return;
   }
-  if (msg.type === 'GET_NEW_COLORS') {
-    const newColors = getNewColors(figma);
-
-    figma.ui.postMessage({ type: 'NEW_COLORS', newColors });
+  if (msg.type === "GET_NEW_COLORS") {
+    try {
+      const newColors = getNewColors(figma);
+      figma.ui.postMessage({ type: "NEW_COLORS", newColors });
+    } catch (error) {
+      console.error(error);
+      figma.ui.postMessage({ type: "NEW_COLORS_ERROR", error });
+    }
   }
 };

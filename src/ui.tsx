@@ -31,6 +31,7 @@ interface StateProps {
   colorDiff: Object;
   oldColors: Object;
   PRLink: string;
+  error: Error | null;
 }
 
 const initialState = {
@@ -41,6 +42,7 @@ const initialState = {
   colorDiff: {},
   oldColors: {},
   PRLink: "",
+  error: null,
 };
 
 class App extends React.Component<{}, StateProps> {
@@ -99,18 +101,22 @@ class App extends React.Component<{}, StateProps> {
 
     //Send colors to Repo
     this.goToStep(Step.LOADING)();
-    const PRLink = await updateRemoteColors(this.state.newColors, {
-      token: this.state.token,
-      sha: this.state.encodedColorsFile.sha,
-      userName: this.state.userName,
-      userEmail: this.state.userEmail,
-      repository: this.state.repository,
-      colorsFilepath: this.state.colorsFilepath,
-      branchRef: this.state.branchRef,
-    });
-
-    this.setState({ PRLink });
-    this.goToStep(Step.SUCCESS)();
+    try {
+      const PRLink = await updateRemoteColors(this.state.newColors, {
+        token: this.state.token,
+        sha: this.state.encodedColorsFile.sha,
+        userName: this.state.userName,
+        userEmail: this.state.userEmail,
+        repository: this.state.repository,
+        colorsFilepath: this.state.colorsFilepath,
+        branchRef: this.state.branchRef,
+      });
+      this.setState({ PRLink });
+      this.goToStep(Step.SUCCESS)();
+    } catch (error) {
+      this.goToStep(Step.INFO)();
+      this.setState({ error });
+    }
   };
 
   componentDidMount() {
@@ -138,17 +144,24 @@ class App extends React.Component<{}, StateProps> {
           break;
         case "NEW_COLORS":
           this.setState({ newColors: pluginMessage.newColors });
-          const { oldColors, encodedColorsFile } = await getOldColors(
-            this.state.repository,
-            this.state.colorsFilepath,
-            this.state.branchRef,
-            this.state.token
-          );
-          this.setState({ encodedColorsFile });
+          try {
+            const { oldColors, encodedColorsFile } = await getOldColors(
+              this.state.repository,
+              this.state.colorsFilepath,
+              this.state.branchRef,
+              this.state.token
+            );
+            this.setState({ encodedColorsFile });
 
-          const colorDiff = detailedDiff(oldColors, this.state.newColors);
-          this.goToStep(Step.REVIEW)();
-          this.setState({ colorDiff, oldColors });
+            const colorDiff = detailedDiff(oldColors, this.state.newColors);
+            this.goToStep(Step.REVIEW)();
+            this.setState({ colorDiff, oldColors });
+          } catch (error) {
+            this.setState({ error });
+          }
+          break;
+        case "NEW_COLORS_ERROR":
+          this.setState({ error: pluginMessage.error });
           break;
       }
     };
@@ -167,10 +180,21 @@ class App extends React.Component<{}, StateProps> {
               We'll grab the styles defined in the current Figma project and
               create a pull request to update the project code.
             </p>
-            <p className="info-banner">
+            <p className="banner info-banner">
               <span className="info-icon">?</span>Step 1/2: Make sure your
               information are correct
             </p>
+            {this.state.error && (
+              <p className="banner error-banner">
+                🚨 {this.state.error.toString()} <br />
+                <i
+                  className="error-banner-dismiss"
+                  onClick={() => this.setState({ error: null })}
+                >
+                  Dismiss
+                </i>
+              </p>
+            )}
             <div className="form-container">
               <p>
                 <label className="text-input-label">
@@ -277,7 +301,7 @@ class App extends React.Component<{}, StateProps> {
         )}
         {this.state.step === Step.SUCCESS && (
           <div id="success-panel">
-            <p className="success-banner">
+            <p className="banner success-banner">
               ✅ Your changes were successfully sent! Share your work with the
               developers
             </p>

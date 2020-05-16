@@ -70,16 +70,29 @@ button.ghost:focus {
   font-weight: bold;
   margin-right: 10px;
 }
-.info-banner {
+.banner {
   padding: 10px;
-  background: cornflowerblue;
   color: white;
   font-size: 16px;
 }
+.info-banner {
+  background: cornflowerblue;
+}
 .success-banner {
-  padding: 10px;
   background: green;
-  color: white;
+}
+.error-banner {
+  background: crimson;
+  position: relative;
+  padding-bottom: 22px;
+}
+.error-banner-dismiss {
+  position: absolute;
+  font-size: 10px;
+  right: 10px;
+  bottom: 10px;
+  line-height: 1;
+  cursor: pointer;
 }
 .review-section-title {
   text-transform: capitalize;

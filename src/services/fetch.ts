@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.github.com/repos';
+const BASE_URL = "https://api.github.com/repos";
 
 type Body = any;
 export const makeApiCall = async (
@@ -8,7 +8,7 @@ export const makeApiCall = async (
 ) => {
   const headers = config.token
     ? {
-        Authorization: `token ${config.token}`
+        Authorization: `token ${config.token}`,
       }
     : {};
 
@@ -17,8 +17,12 @@ export const makeApiCall = async (
     ...config,
     ...{
       headers,
-      body
-    }
+      body,
+    },
   });
+
+  if (response.status >= 400) {
+    throw Error(`Code ${response.status}: ${response.statusText}`);
+  }
   return response.json();
 };

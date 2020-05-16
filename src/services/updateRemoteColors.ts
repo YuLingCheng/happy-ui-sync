@@ -80,27 +80,70 @@ const updateRemoteColors = async (
   { token, sha, userName, userEmail, repository, colorsFilepath, branchRef }
 ) => {
   const newBranchName = generateBranchName();
-  await createBranch(newBranchName, token, repository, branchRef);
-  await updateColorsJsonContent(
-    sha,
-    newContent,
-    repository,
-    colorsFilepath,
-    newBranchName,
-    token,
-    userName,
-    userEmail
-  );
-  const { html_url } = await createPullRequest(
-    repository,
-    newBranchName,
-    token,
-    userName,
-    userEmail,
-    branchRef
-  );
 
-  return html_url;
+  try {
+    await createBranch(newBranchName, token, repository, branchRef);
+  } catch (error) {
+    console.error("Could not create a new branch on Github", {
+      newBranchName,
+      repository,
+      branchRef,
+      error,
+    });
+    throw Error(
+      `Could not create a new branch on Github. ${error.message} (Please check your credentials)`
+    );
+  }
+
+  try {
+    await updateColorsJsonContent(
+      sha,
+      newContent,
+      repository,
+      colorsFilepath,
+      newBranchName,
+      token,
+      userName,
+      userEmail
+    );
+  } catch (error) {
+    console.error("Could push the new colors to the new branch", {
+      lastCommitSha: sha,
+      newContent,
+      repository,
+      colorsFilepath,
+      newBranchName,
+      userName,
+      userEmail,
+      error,
+    });
+    throw Error(
+      `Could push the new colors to the new branch. ${error.message}`
+    );
+  }
+
+  try {
+    const response = await createPullRequest(
+      repository,
+      newBranchName,
+      token,
+      userName,
+      userEmail,
+      branchRef
+    );
+
+    return response.html_url;
+  } catch (error) {
+    console.error("Could not create a pull request on Github", {
+      repository,
+      newBranchName,
+      userName,
+      userEmail,
+      branchRef,
+      error,
+    });
+    throw Error(`Could not create a pull request on Github. ${error.message}`);
+  }
 };
 
 export default updateRemoteColors;

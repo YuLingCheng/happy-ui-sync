@@ -100,7 +100,7 @@ const Review = ({ colorDiff, oldColors }) => {
   if (!colorDiff || !oldColors) return null;
   return (
     <>
-      <p className="info-banner">
+      <p className="banner info-banner">
         <span className="info-icon">?</span>
         Step 2/2: Review your changes
       </p>
