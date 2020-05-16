@@ -17,53 +17,57 @@ Export local styles from your figma project to your project repository
 
 ##### Local styles format in Figma
 
-Local Styles > Color Styles:
+Define colors in "Local Styles > Color Styles"
 
-"Primary / 700"
-"Primary / 300"
-"Color Name / Variant"
+Examples :
 
-The color name and variant must be separated by the following characters " / " (don't forget the space before and after)
+- "Primary / 700"
+- "Primary / 300"
+- "Primary / 100"
+- "Color Name / Variant"
+
+Rules :
+
+- The color name and variant must be separated by the following characters " / " (don't forget the space before and after)
+- Use Figma "Solid" type for colors
 
 #### Variables format in code
 
 For now, this plugin only handles json format.
 
 - All color names are camelcased.
-- Colors are stored in rgb format (rgba is not supported yet)
+- Colors are stored in rgba format
 
 ```json
 // colors.json
 {
   "primary": {
-    "300": "rgb(238,223,242)",
-    "500": "rgb(219,165,245)",
-    "700": "rgb(190,82,242)"
+    "300": "rgba(223, 242, 240, 1)",
+    "500": "rgba(165, 240, 245, 1)",
+    "700": "rgba(82, 203, 242, 0.58)"
   },
   "secondary": {
-    "300": "rgb(229,231,250)",
-    "500": "rgb(165,175,251)",
-    "700": "rgb(105,121,248)"
+    "300": "rgba(229, 231, 250, 1)",
+    "500": "rgba(165, 175, 251, 1)",
+    "700": "rgba(105, 121, 248, 1)"
   },
-  "warning": {
-    "300": "rgb(255,232,218)",
-    "500": "rgb(255,199,166)",
-    "700": "rgb(255,162,107)"
-  },
-  "info": {
-    "100": "rgb(213,233,250)",
-    "500": "rgb(102,181,248)",
-    "900": "rgb(0,132,244)"
+  "gray": {
+    "100": "rgba(255, 255, 255, 1)",
+    "200": "rgba(247, 245, 249, 1)",
+    "300": "rgba(235, 234, 237, 1)",
+    "500": "rgba(207, 201, 214, 1)",
+    "700": "rgba(62, 51, 85, 1)",
+    "900": "rgba(25, 4, 29, 1)"
   },
   "error": {
-    "100": "rgb(251,228,232)",
-    "500": "rgb(253,175,187)",
-    "900": "rgb(255,100,124)"
+    "100": "rgba(251, 228, 232, 1)",
+    "500": "rgba(253, 175, 187, 1)",
+    "900": "rgba(255, 100, 124, 1)"
   },
   "success": {
-    "100": "rgb(213,242,234)",
-    "500": "rgb(125,223,195)",
-    "900": "rgb(0,196,140)"
+    "100": "rgba(213, 242, 234, 1)",
+    "500": "rgba(125, 223, 195, 1)",
+    "900": "rgba(0, 196, 140, 1)"
   }
 }
 ```
