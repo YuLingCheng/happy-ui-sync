@@ -1,6 +1,7 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import { detailedDiff } from "deep-object-diff";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Loader from "components/Loader";
 import getOldColors from "services/getOldColors";
@@ -32,6 +33,7 @@ interface StateProps {
   oldColors: Object;
   PRLink: string;
   error: Error | null;
+  copied: boolean;
 }
 
 const initialState = {
@@ -43,6 +45,7 @@ const initialState = {
   oldColors: {},
   PRLink: "",
   error: null,
+  copied: false,
 };
 
 class App extends React.Component<{}, StateProps> {
@@ -88,6 +91,7 @@ class App extends React.Component<{}, StateProps> {
   };
 
   goToStep = (step: Step) => () => {
+    this.setState({ copied: false });
     if (step === Step.INFO) {
       this.setState(initialState);
     }
@@ -305,7 +309,7 @@ class App extends React.Component<{}, StateProps> {
               ✅ Your changes were successfully sent! Share your work with the
               developers
             </p>
-            <div className="form-container">
+            <div className="pr-link-container">
               <a
                 id="pull-request-link"
                 target="_blank"
@@ -314,7 +318,16 @@ class App extends React.Component<{}, StateProps> {
               >
                 {this.state.PRLink}
               </a>
-              <input id="pull-request-input" />
+              <div>
+                <CopyToClipboard
+                  text={this.state.PRLink}
+                  onCopy={() => this.setState({ copied: true })}
+                >
+                  <button type="button">
+                    {this.state.copied ? "URL copied" : "Copy the URL"}
+                  </button>
+                </CopyToClipboard>
+              </div>
             </div>
             <p>
               <button
@@ -325,8 +338,6 @@ class App extends React.Component<{}, StateProps> {
               >
                 Back
               </button>
-              <button id="copy-url-button">Copy the URL</button>
-              <span id="url-copied">URL copied</span>
             </p>
           </div>
         )}

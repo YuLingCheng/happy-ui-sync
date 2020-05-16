@@ -35,6 +35,7 @@
     "deep-object-diff": "^1.1.0",
     "lodash.camelcase": "^4.3.0",
     "react": "^16.11.0",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.11.0"
   }
 }

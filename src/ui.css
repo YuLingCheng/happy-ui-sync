@@ -56,7 +56,8 @@ button.ghost:focus {
 }
 
 #review-panel,
-.form-container {
+.form-container,
+.pr-link-container {
   padding: 10px;
   border: 1px solid grey;
   overflow-x: auto;
@@ -125,18 +126,14 @@ button.ghost:focus {
   justify-content: space-evenly;
 }
 
-#pull-request-input {
-  opacity: 0;
-}
-
-#url-copied {
-  display: none;
-  padding: 0 5px;
-  color: cornflowerblue;
-}
-
 #loader-panel {
   width: 100%;
   text-align: center;
   margin-top: 20px;
+}
+
+.pr-link-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
