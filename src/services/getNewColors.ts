@@ -1,3 +1,5 @@
+import camelcase from "lodash.camelcase";
+
 // ------ Parse paintstyles -------
 const getNewColors = (figma: PluginAPI) => {
   const painStyles = figma.getLocalPaintStyles();
@@ -5,10 +7,10 @@ const getNewColors = (figma: PluginAPI) => {
   const parseColorName = (
     color: PaintStyle
   ): { name: string; variant: number } => {
-    const [name, variant] = color.name.split(' / ');
+    const [name, variant] = color.name.split(" / ");
     return {
-      name: name.toLowerCase(),
-      variant: parseInt(variant)
+      name: camelcase(name),
+      variant: camelcase(variant),
     };
   };
 
@@ -20,7 +22,7 @@ const getNewColors = (figma: PluginAPI) => {
   };
 
   const solidPaintStyles = painStyles.filter(
-    paintStyle => paintStyle.paints[0].type === 'SOLID'
+    (paintStyle) => paintStyle.paints[0].type === "SOLID"
   );
 
   interface ParsedColors {
